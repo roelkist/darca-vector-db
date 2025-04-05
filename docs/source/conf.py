@@ -36,7 +36,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.autodoc",
     "sphinxcontrib.plantuml",
-    'sphinx.ext.napoleon',
+    "sphinx.ext.napoleon",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -61,13 +61,13 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 autodoc_default_options = {
-    'members': True,
-    'undoc-members': True,
-    'show-inheritance': True,
-    'inherited-members': True,
+    "members": True,
+    "undoc-members": True,
+    "show-inheritance": True,
+    "inherited-members": True,
 }
 
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]

@@ -2,7 +2,8 @@
 db_client.py
 ============
 
-A pluggable vector database client system with backend support. Currently, the only supported backend is Qdrant.
+A pluggable vector database client system with backend support.
+Currently, the only supported backend is Qdrant.
 
 Modules:
     - BaseDBClient (Abstract Base Class)
@@ -55,7 +56,9 @@ class DBConnectionError(DBClientException):
 
 
 class CollectionCreationError(DBClientException):
-    """Raised when the creation of a collection in the vector database fails."""
+    """
+    Raised when the creation of a collection in the vector database fails.
+    """
 
     pass
 
@@ -75,27 +78,27 @@ class VectorSearchError(DBClientException):
 # === Abstract Base Client ===
 
 
-from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
-
-
 class BaseDBClient(ABC):
     """
     Abstract base class for vector database clients.
 
-    This class defines a standardized interface for all vector database clients. 
-    It enforces implementation of essential methods for connecting to a vector database,
-    creating collections, inserting vectors, and performing vector searches.
+    This class defines a standardized interface for all vector database
+    clients. It enforces implementation of essential methods for connecting
+    to a vector database, creating collections, inserting vectors, and
+    performing vector searches.
 
     Methods
     -------
     connect() -> None
         Establishes a connection to the vector database.
-    create_collection(name: str, vector_size: int, distance_metric: str) -> None
+    create_collection
+        (name: str, vector_size: int, distance_metric: str) -> None
         Creates a new collection in the vector database.
-    insert_vector(collection_name: str, vector_id: str, vector: List[float], metadata: Optional[Dict[str, Any]]) -> None
+    insert_vector(collection_name: str, vector_id: str, vector: List[float],
+        metadata: Optional[Dict[str, Any]]) -> None
         Inserts a vector into a specified collection.
-    search_vectors(collection_name: str, query_vector: List[float], top_k: int) -> Any
+    search_vectors(collection_name: str, query_vector:
+        List[float], top_k: int) -> Any
         Searches for similar vectors within a collection.
     """
 
@@ -104,7 +107,8 @@ class BaseDBClient(ABC):
         """
         Establishes a connection to the vector database.
 
-        This method should be implemented by subclasses to establish a connection
+        This method should be implemented by subclasses to establish a
+        connection
         to the underlying vector database system.
 
         Raises
@@ -121,17 +125,22 @@ class BaseDBClient(ABC):
         """
         Creates a new collection in the vector database.
 
-        This method defines the creation of a new collection within the vector database.
-        A collection is a logical grouping of vectors with a specified size and distance metric.
+        This method defines the creation of a new collection within the vector
+        database. A collection is a logical grouping of vectors with a
+        specified size and distance metric.
 
         Parameters
         ----------
         name : str
-            The name of the collection to create. Must be unique within the database.
+            The name of the collection to create. Must be unique within the
+            database.
         vector_size : int
-            The size (dimensionality) of the vectors to be stored in the collection.
+            The size (dimensionality) of the vectors to be stored in the
+            collection.
         distance_metric : str
-            The distance metric to use for vector comparisons. Typical values include:
+            The distance metric to use for vector comparisons. Typical
+            values include:
+
                 - 'cosine'
                 - 'euclidean'
                 - 'dot'
@@ -142,6 +151,8 @@ class BaseDBClient(ABC):
             If the method is not implemented by the subclass.
         ValueError
             If the specified distance metric is not supported by the backend.
+            Note: Validation for unsupported distance metrics must be
+            implemented by subclasses.
         """
         raise NotImplementedError("Subclasses must implement this method.")
 
@@ -156,26 +167,32 @@ class BaseDBClient(ABC):
         """
         Inserts a vector into a specified collection.
 
-        This method adds a single vector, identified by a unique ID, to an existing collection.
-        Optionally, metadata can be associated with the vector for additional information.
+        This method adds a single vector, identified by a unique ID, to an
+        existing collection.
+        Optionally, metadata can be associated with the vector for additional
+        information.
 
         Parameters
         ----------
         collection_name : str
             The name of the collection where the vector will be stored.
         vector_id : str
-            A unique identifier for the vector. It must be unique within the collection.
+            A unique identifier for the vector. It must be unique within the
+            collection.
         vector : List[float]
-            The vector data to be inserted. The length of the list should match the collection's vector size.
+            The vector data to be inserted. The length of the list should
+            match the collection's vector size.
         metadata : dict, optional
-            A dictionary of metadata to associate with the vector. Defaults to None.
+            A dictionary of metadata to associate with the vector. Defaults
+            to None.
 
         Raises
         ------
         NotImplementedError
             If the method is not implemented by the subclass.
         ValueError
-            If the vector size does not match the expected collection vector size.
+            If the vector size does not match the expected collection
+            vector size.
         """
         raise NotImplementedError("Subclasses must implement this method.")
 
@@ -186,7 +203,8 @@ class BaseDBClient(ABC):
         """
         Searches for similar vectors within a collection.
 
-        This method performs a similarity search against a specified collection,
+        This method performs a similarity search against a specified
+        collection,
         returning the most similar vectors to a given query vector.
 
         Parameters
@@ -194,14 +212,16 @@ class BaseDBClient(ABC):
         collection_name : str
             The name of the collection to search within.
         query_vector : List[float]
-            The query vector used to perform the search. The length must match the collection's vector size.
+            The query vector used to perform the search. The length must
+            match the collection's vector size.
         top_k : int, optional
             The number of most similar vectors to return. Defaults to 10.
 
         Returns
         -------
         Any
-            The search results as returned by the underlying vector database implementation.
+            The search results as returned by the underlying vector
+            database implementation.
             The format of the results may vary depending on the backend.
 
         Raises
@@ -209,7 +229,8 @@ class BaseDBClient(ABC):
         NotImplementedError
             If the method is not implemented by the subclass.
         ValueError
-            If the query vector size does not match the expected collection vector size.
+            If the query vector size does not match the expected
+            collection vector size.
         """
         raise NotImplementedError("Subclasses must implement this method.")
 
@@ -252,7 +273,7 @@ class QdrantDBClient(BaseDBClient):
             self.logger.info(
                 f"Successfully connected to Qdrant at {self.host}:{self.port}"
             )
-        except Exception as e:
+        except Exception:
             self.logger.error("Connection to Qdrant failed", exc_info=True)
             raise DBConnectionError(
                 "Failed to connect to Qdrant server", "DB_CONN_ERROR"
@@ -270,7 +291,7 @@ class QdrantDBClient(BaseDBClient):
             self.logger.info(f"Collection '{name}' created successfully.")
         except AttributeError:
             raise ValueError(f"Unsupported distance metric: {distance_metric}")
-        except UnexpectedResponse as e:
+        except UnexpectedResponse:
             self.logger.error("Failed to create collection", exc_info=True)
             raise CollectionCreationError(
                 "Failed to create collection", "COLLECTION_CREATION_ERROR"
@@ -288,9 +309,10 @@ class QdrantDBClient(BaseDBClient):
             point = PointStruct(id=vector_id, vector=vector, payload=metadata)
             self.client.upsert(collection_name=collection_name, points=[point])
             self.logger.info(
-                f"Vector with ID '{vector_id}' inserted successfully into '{collection_name}'."
+                f"Vector with ID '{vector_id}' inserted successfully "
+                f"into '{collection_name}'."
             )
-        except Exception as e:
+        except Exception:
             self.logger.error("Failed to insert vector", exc_info=True)
             raise VectorInsertionError(
                 "Failed to insert vector", "VECTOR_INSERTION_ERROR"
@@ -305,10 +327,11 @@ class QdrantDBClient(BaseDBClient):
                 collection_name, query_vector, limit=top_k
             )
             self.logger.info(
-                f"Search completed successfully in collection '{collection_name}'."
+                f"Search completed successfully in collection "
+                f"'{collection_name}'."
             )
             return results
-        except Exception as e:
+        except Exception:
             self.logger.error("Failed to search vectors", exc_info=True)
             raise VectorSearchError(
                 "Failed to search vectors", "VECTOR_SEARCH_ERROR"
@@ -350,6 +373,7 @@ class DBClient:
     ) -> None:
         """
         Creates a new collection in the vector database.
+
         Parameters
         ----------
         name : str
@@ -357,7 +381,8 @@ class DBClient:
         vector_size : int
             The size of the vectors to be stored in the collection.
         distance_metric : str
-            The distance metric to use for vector comparisons (default: 'cosine').
+            The distance metric to use for vector comparisons
+            (default: 'cosine').
         Raises
         -------
         ValueError
@@ -395,7 +420,8 @@ class DBClient:
             collection_name, vector_id, vector, metadata
         )
         self.logger.info(
-            f"Vector '{vector_id}' inserted into collection '{collection_name}'."
+            f"Vector '{vector_id}' inserted into collection "
+            f"'{collection_name}'."
         )
 
     def search_vectors(

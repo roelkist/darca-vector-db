@@ -15,7 +15,6 @@ from darca_vector_db import (
     CollectionCreationError,
     DBClient,
     DBConnectionError,
-    QdrantDBClient,
     VectorInsertionError,
     VectorSearchError,
 )
@@ -23,7 +22,8 @@ from darca_vector_db import (
 
 class DummyDBClient(BaseDBClient):
     """
-    Dummy implementation of BaseDBClient for testing abstract method invocation.
+    Dummy implementation of BaseDBClient for testing abstract
+    method invocation.
     """
 
     def connect(self) -> None:
@@ -206,7 +206,8 @@ def test_dbclient_backend_error():
 def test_create_collection_invalid_distance_metric(qdrant_client):
     """
     Test collection creation failure due to invalid distance metric.
-    This will cover line 143 where a ValueError is raised due to AttributeError.
+    This will cover line 143 where a ValueError is raised due to
+    AttributeError.
     """
     with pytest.raises(
         ValueError, match="Unsupported distance metric: INVALID_METRIC"
@@ -219,7 +220,8 @@ def test_create_collection_invalid_distance_metric(qdrant_client):
 def test_create_collection_unexpected_response(qdrant_client):
     """
     Test collection creation failure due to an UnexpectedResponse exception.
-    This will cover lines 145 and 146 where logger.error is called and CollectionCreationError is raised.
+    This will cover lines 145 and 146 where logger.error is called
+    and CollectionCreationError is raised.
     """
     # Mock the client to raise an UnexpectedResponse with required arguments
     qdrant_client.client.create_collection.side_effect = UnexpectedResponse(
@@ -258,7 +260,8 @@ def test_dbclient_connect(db_client):
 def test_dbclient_create_collection(db_client):
     """
     Test the create_collection() method of DBClient.
-    Ensures that the collection creation is made and the logger.info() is called.
+    Ensures that the collection creation is made and the logger.info()
+    is called.
     """
     db_client._client.create_collection = MagicMock()
 
@@ -275,7 +278,8 @@ def test_dbclient_create_collection(db_client):
 def test_dbclient_insert_vector(db_client):
     """
     Test the insert_vector() method of DBClient.
-    Ensures that the vector insertion is made and the logger.info() is called.
+    Ensures that the vector insertion is made and the logger.info()
+    is called.
     """
     db_client._client.insert_vector = MagicMock()
 

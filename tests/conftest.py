@@ -2,7 +2,8 @@
 conftest.py
 ===========
 
-Contains pytest fixtures for setting up and tearing down resources used in testing the db_client module.
+Contains pytest fixtures for setting up and tearing down
+resources used in testing the db_client module.
 """
 
 from unittest.mock import MagicMock, patch
@@ -25,7 +26,8 @@ def mock_logger():
 @pytest.fixture(scope="module")
 def qdrant_client(mock_logger):
     """
-    Fixture to create a QdrantDBClient instance for testing with mocked methods.
+    Fixture to create a QdrantDBClient instance for testing with
+    mocked methods.
     """
     client = QdrantDBClient(host="localhost", port=6333)
     client.client = MagicMock()  # Mock the actual Qdrant client
@@ -36,7 +38,8 @@ def qdrant_client(mock_logger):
 @pytest.fixture(scope="module")
 def db_client(mock_logger):
     """
-    Fixture to create a generic DBClient instance for testing with mocked Qdrant backend.
+    Fixture to create a generic DBClient instance for testing with
+    mocked Qdrant backend.
     """
     client = DBClient(backend="qdrant")
     client._client = MagicMock()
