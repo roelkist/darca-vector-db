@@ -305,7 +305,7 @@ def test_dbclient_search_vectors(db_client):
     Ensures that the search operation is made and the logger.info() is called.
     """
     db_client.logger.info.reset_mock()  # Ensure isolation between tests
-    
+
     db_client._client.search_vectors = MagicMock(
         return_value=["result1", "result2"]
     )
