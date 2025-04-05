@@ -95,7 +95,7 @@ test:
 		--cov-report=html \
 		--cov-report=term \
 		--cov-report=json:coverage.json \
-		-n 1 -vv tests/
+		-n auto -vv tests/
 	@echo "📊 Generating coverage badge..."
 	@COVERAGE_FILE=/tmp/.coverage $(RUN) coverage-badge -o coverage.svg -f
 	@cp coverage.svg docs/source/_static/.
