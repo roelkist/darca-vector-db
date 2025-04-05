@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to darca-embeddings’s documentation! &mdash; DARCA&#39;s Abstraction for vector databases. 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage Guide" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            DARCA's Abstraction for vector databases.
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">DARCA's Abstraction for vector databases.</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to darca-embeddings’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-darca-embeddings-s-documentation">
+<h1>Welcome to darca-embeddings’s documentation!<a class="headerlink" href="#welcome-to-darca-embeddings-s-documentation" title="Link to this heading"></a></h1>
+<section id="project-overview">
+<h2>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading"></a></h2>
+</section>
+</section>
+<section id="darca-vector-db">
+<h1>darca-vector-db<a class="headerlink" href="#darca-vector-db" title="Link to this heading"></a></h1>
+<p>A pluggable vector database client system with backend support. Currently, the only supported backend is Qdrant.
+This project provides a unified client interface to interact with vector databases. It is designed to be easily extensible to support additional backends in the future.</p>
+<p><a class="reference external" href="https://github.com/roelkist/darca-vector-db/actions"><img alt="Build Status" src="https://github.com/roelkist/darca-vector-db/actions/workflows/ci.yml/badge.svg" /></a> <a class="reference external" href="https://github.com/roelkist/darca-vector-db/actions"><img alt="Deploy Status" src="https://github.com/roelkist/darca-vector-db/actions/workflows/cd.yml/badge.svg" /></a> <a class="reference external" href="https://codecov.io/gh/roelkist/darca-vector-db"><img alt="Codecov" src="https://codecov.io/gh/roelkist/darca-vector-db/branch/main/graph/badge.svg" /></a> <a class="reference external" href="https://github.com/psf/black"><img alt="Black code style" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a> <a class="reference external" href="https://pypi.org/project/darca-vector-db/"><img alt="PyPi" src="https://img.shields.io/pypi/v/darca-vector-db" /></a> <a class="reference external" href="https://roelkist.github.io/darca-vector-db/"><img alt="GitHub Pages" src="https://img.shields.io/github/deployments/roelkist/darca-vector-db/github-pages" /></a></p>
+<section id="github-repository">
+<h2>GitHub Repository:<a class="headerlink" href="#github-repository" title="Link to this heading"></a></h2>
+<p>Visit the official repository at: <a class="reference external" href="https://github.com/roelkist/darca-vector-db">darca-vector-db on GitHub</a></p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>The project uses <cite>Poetry</cite> for dependency management and virtual environment handling.</p>
+<p>To set up the project locally, follow these steps:</p>
+<ol class="arabic">
+<li><p>Clone the repository:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>git clone <a class="reference external" href="https://github.com/roelkist/darca-vector-db.git">https://github.com/roelkist/darca-vector-db.git</a>
+cd darca-vector-db</p>
+</div></blockquote>
+</li>
+<li><p>Create a virtual environment and install dependencies:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>make venv
+make poetry
+make install</p>
+</div></blockquote>
+</li>
+<li><p>Running tests:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>make test</p>
+</div></blockquote>
+</li>
+<li><p>Formatting the code:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>make format</p>
+</div></blockquote>
+</li>
+<li><p>Building the documentation:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>make docs</p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Unified client interface for vector databases</p></li>
+<li><p>Qdrant support</p></li>
+<li><p>Easy to extend for additional backends</p></li>
+<li><p>Structured logging and error handling</p></li>
+<li><p>Flexible CI and local environment support</p></li>
+<li><p>Automated testing and code formatting</p></li>
+</ul>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<p>To use the client, instantiate it with the desired backend (currently only Qdrant is supported):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">darca_vector_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">DBClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">DBClient</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;qdrant&quot;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6333</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="n">client</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span> <span class="n">vector_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">insert_vector</span><span class="p">(</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span> <span class="n">vector_id</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">vector</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_vectors</span><span class="p">(</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span> <span class="n">query_vector</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading"></a></h2>
+<p>Contributions are welcome! Please refer to the <cite>CONTRIBUTING.rst</cite> for detailed guidelines.</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading"></a></h2>
+<p>MIT License</p>
+</section>
+<section id="author">
+<h2>Author<a class="headerlink" href="#author" title="Link to this heading"></a></h2>
+<p>Roel Kist</p>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#importing-the-library">Importing the Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#creating-a-client">Creating a Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#creating-a-collection">Creating a Collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#inserting-vectors">Inserting Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#searching-for-vectors">Searching for Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="community-contribution">
+<h2>Community &amp; Contribution<a class="headerlink" href="#community-contribution" title="Link to this heading"></a></h2>
+</section>
+</section>
+<section id="contributing-to-darca-vector-db">
+<h1>Contributing to darca-vector-db<a class="headerlink" href="#contributing-to-darca-vector-db" title="Link to this heading"></a></h1>
+<p>Thank you for considering contributing to darca-vector-db! Your contributions help make this project better.</p>
+<section id="id1">
+<h2>Getting Started<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>To set up your local environment for development, follow these steps:</p>
+<ol class="arabic">
+<li><p>Clone the repository:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>git clone <a class="reference external" href="https://github.com/roelkist/darca-vector-db.git">https://github.com/roelkist/darca-vector-db.git</a>
+cd darca-vector-db</p>
+</div></blockquote>
+</li>
+<li><p>Create a virtual environment and install dependencies:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>make venv
+make poetry
+make install</p>
+</div></blockquote>
+</li>
+<li><p>Run the tests to ensure your setup is correct:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>make test</p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="creating-pull-requests-prs">
+<h2>Creating Pull Requests (PRs)<a class="headerlink" href="#creating-pull-requests-prs" title="Link to this heading"></a></h2>
+<p>All contributions should be made by directly creating a new branch in the main repository (no forking is needed).</p>
+<ol class="arabic">
+<li><p>Create a new branch:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>git checkout -b feature/my-awesome-feature</p>
+</div></blockquote>
+</li>
+<li><p>Make your changes, following the project’s coding standards and guidelines.</p></li>
+<li><p>Run the complete check to ensure that your changes comply:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>make check</p>
+</div></blockquote>
+</li>
+<li><p>Commit your changes with a descriptive message:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>git commit -m “Add feature: My awesome feature”</p>
+</div></blockquote>
+</li>
+<li><p>Push your branch:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>git push origin feature/my-awesome-feature</p>
+</div></blockquote>
+</li>
+<li><p>Open a Pull Request (PR) against the <cite>main</cite> branch.</p></li>
+</ol>
+</section>
+<section id="issues-and-feature-requests">
+<h2>Issues and Feature Requests<a class="headerlink" href="#issues-and-feature-requests" title="Link to this heading"></a></h2>
+<p>To report a bug or request a new feature, please open an issue on the GitHub repository:
+<a class="reference external" href="https://github.com/roelkist/darca-vector-db/issues">Issues on GitHub</a></p>
+<p>Before submitting, ensure that the issue or request does not already exist.</p>
+</section>
+<section id="guidelines">
+<h2>Guidelines<a class="headerlink" href="#guidelines" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Make sure to run <cite>make check</cite> before committing changes.</p></li>
+<li><p>Use separate <cite>make</cite> targets (like <cite>make test</cite>, <cite>make format</cite>) instead of running everything at once.</p></li>
+<li><p>Include tests for new features or bug fixes.</p></li>
+<li><p>Write clear and concise commit messages.</p></li>
+<li><p>Keep your code consistent with existing code style.</p></li>
+</ul>
+</section>
+<section id="code-of-conduct">
+<h2>Code of Conduct<a class="headerlink" href="#code-of-conduct" title="Link to this heading"></a></h2>
+<p>We are committed to providing a welcoming and inclusive environment. Please be respectful and considerate in your interactions.</p>
+</section>
+<section id="id2">
+<h2>License<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>By contributing, you agree that your contributions will be licensed under the MIT License.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2025 darca-vectordb-client Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

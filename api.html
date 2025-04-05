@@ -1,0 +1,676 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; DARCA&#39;s Abstraction for vector databases. 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Usage Guide" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            DARCA's Abstraction for vector databases.
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#darca_vector_db.QdrantDBClient"><code class="docutils literal notranslate"><span class="pre">QdrantDBClient</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.QdrantDBClient.connect"><code class="docutils literal notranslate"><span class="pre">QdrantDBClient.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.QdrantDBClient.create_collection"><code class="docutils literal notranslate"><span class="pre">QdrantDBClient.create_collection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.QdrantDBClient.insert_vector"><code class="docutils literal notranslate"><span class="pre">QdrantDBClient.insert_vector()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.QdrantDBClient.search_vectors"><code class="docutils literal notranslate"><span class="pre">QdrantDBClient.search_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_vector_db.DBClient"><code class="docutils literal notranslate"><span class="pre">DBClient</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBClient.connect"><code class="docutils literal notranslate"><span class="pre">DBClient.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBClient.create_collection"><code class="docutils literal notranslate"><span class="pre">DBClient.create_collection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBClient.insert_vector"><code class="docutils literal notranslate"><span class="pre">DBClient.insert_vector()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBClient.search_vectors"><code class="docutils literal notranslate"><span class="pre">DBClient.search_vectors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#darca_vector_db.DBClientException"><code class="docutils literal notranslate"><span class="pre">DBClientException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBClientException.add_note"><code class="docutils literal notranslate"><span class="pre">DBClientException.add_note()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBClientException.args"><code class="docutils literal notranslate"><span class="pre">DBClientException.args</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBClientException.log_exception"><code class="docutils literal notranslate"><span class="pre">DBClientException.log_exception()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBClientException.to_dict"><code class="docutils literal notranslate"><span class="pre">DBClientException.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBClientException.with_traceback"><code class="docutils literal notranslate"><span class="pre">DBClientException.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_vector_db.DBConnectionError"><code class="docutils literal notranslate"><span class="pre">DBConnectionError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBConnectionError.add_note"><code class="docutils literal notranslate"><span class="pre">DBConnectionError.add_note()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBConnectionError.args"><code class="docutils literal notranslate"><span class="pre">DBConnectionError.args</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBConnectionError.log_exception"><code class="docutils literal notranslate"><span class="pre">DBConnectionError.log_exception()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBConnectionError.to_dict"><code class="docutils literal notranslate"><span class="pre">DBConnectionError.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.DBConnectionError.with_traceback"><code class="docutils literal notranslate"><span class="pre">DBConnectionError.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_vector_db.CollectionCreationError"><code class="docutils literal notranslate"><span class="pre">CollectionCreationError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.CollectionCreationError.add_note"><code class="docutils literal notranslate"><span class="pre">CollectionCreationError.add_note()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.CollectionCreationError.args"><code class="docutils literal notranslate"><span class="pre">CollectionCreationError.args</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.CollectionCreationError.log_exception"><code class="docutils literal notranslate"><span class="pre">CollectionCreationError.log_exception()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.CollectionCreationError.to_dict"><code class="docutils literal notranslate"><span class="pre">CollectionCreationError.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.CollectionCreationError.with_traceback"><code class="docutils literal notranslate"><span class="pre">CollectionCreationError.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_vector_db.VectorInsertionError"><code class="docutils literal notranslate"><span class="pre">VectorInsertionError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorInsertionError.add_note"><code class="docutils literal notranslate"><span class="pre">VectorInsertionError.add_note()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorInsertionError.args"><code class="docutils literal notranslate"><span class="pre">VectorInsertionError.args</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorInsertionError.log_exception"><code class="docutils literal notranslate"><span class="pre">VectorInsertionError.log_exception()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorInsertionError.to_dict"><code class="docutils literal notranslate"><span class="pre">VectorInsertionError.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorInsertionError.with_traceback"><code class="docutils literal notranslate"><span class="pre">VectorInsertionError.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_vector_db.VectorSearchError"><code class="docutils literal notranslate"><span class="pre">VectorSearchError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorSearchError.add_note"><code class="docutils literal notranslate"><span class="pre">VectorSearchError.add_note()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorSearchError.args"><code class="docutils literal notranslate"><span class="pre">VectorSearchError.args</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorSearchError.log_exception"><code class="docutils literal notranslate"><span class="pre">VectorSearchError.log_exception()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorSearchError.to_dict"><code class="docutils literal notranslate"><span class="pre">VectorSearchError.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#darca_vector_db.VectorSearchError.with_traceback"><code class="docutils literal notranslate"><span class="pre">VectorSearchError.with_traceback()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DARCA's Abstraction for vector databases.</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_vector_db.</span></span><span class="sig-name descname"><span class="pre">BaseDBClient</span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#BaseDBClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract base class for vector database clients.</p>
+<p>This class defines a standardized interface for all vector database
+clients. It enforces implementation of essential methods for connecting
+to a vector database, creating collections, inserting vectors, and
+performing vector searches.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#BaseDBClient.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Establishes a connection to the vector database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">create_collection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#BaseDBClient.create_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>(name: str, vector_size: int, distance_metric: str) -&gt; None
+Creates a new collection in the vector database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">insert_vector(collection_name:</span> <span class="pre">str,</span> <span class="pre">vector_id:</span> <span class="pre">str,</span> <span class="pre">vector:</span> <span class="pre">List[float],</span></span></dt>
+<dd><p>metadata: Optional[Dict[str, Any]]) -&gt; None
+Inserts a vector into a specified collection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">search_vectors(collection_name:</span> <span class="pre">str,</span> <span class="pre">query_vector:</span></span></dt>
+<dd><p>List[float], top_k: int) -&gt; Any
+Searches for similar vectors within a collection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#BaseDBClient.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Establishes a connection to the vector database.</p>
+<p>This method should be implemented by subclasses to establish a
+connection
+to the underlying vector database system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If the method is not implemented by the subclass.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#BaseDBClient.create_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Creates a new collection in the vector database.</p>
+<p>This method defines the creation of a new collection within the vector
+database. A collection is a logical grouping of vectors with a
+specified size and distance metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the collection to create. Must be unique within the
+database.</p></li>
+<li><p><strong>vector_size</strong> (<em>int</em>) – The size (dimensionality) of the vectors to be stored in the
+collection.</p></li>
+<li><p><strong>distance_metric</strong> (<em>str</em>) – <p>The distance metric to use for vector comparisons. Typical
+values include:</p>
+<blockquote>
+<div><ul>
+<li><p>’cosine’</p></li>
+<li><p>’euclidean’</p></li>
+<li><p>’dot’</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>NotImplementedError</strong> – If the method is not implemented by the subclass.</p></li>
+<li><p><strong>ValueError</strong> – If the specified distance metric is not supported by the backend.
+    Note: Validation for unsupported distance metrics must be
+    implemented by subclasses.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">insert_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#BaseDBClient.insert_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Inserts a vector into a specified collection.</p>
+<p>This method adds a single vector, identified by a unique ID, to an
+existing collection.
+Optionally, metadata can be associated with the vector for additional
+information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collection_name</strong> (<em>str</em>) – The name of the collection where the vector will be stored.</p></li>
+<li><p><strong>vector_id</strong> (<em>str</em>) – A unique identifier for the vector. It must be unique within the
+collection.</p></li>
+<li><p><strong>vector</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – The vector data to be inserted. The length of the list should
+match the collection’s vector size.</p></li>
+<li><p><strong>metadata</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary of metadata to associate with the vector. Defaults
+to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>NotImplementedError</strong> – If the method is not implemented by the subclass.</p></li>
+<li><p><strong>ValueError</strong> – If the vector size does not match the expected collection
+    vector size.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#BaseDBClient.search_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Searches for similar vectors within a collection.</p>
+<p>This method performs a similarity search against a specified
+collection,
+returning the most similar vectors to a given query vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collection_name</strong> (<em>str</em>) – The name of the collection to search within.</p></li>
+<li><p><strong>query_vector</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – The query vector used to perform the search. The length must
+match the collection’s vector size.</p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of most similar vectors to return. Defaults to 10.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The search results as returned by the underlying vector
+database implementation.
+The format of the results may vary depending on the backend.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>NotImplementedError</strong> – If the method is not implemented by the subclass.</p></li>
+<li><p><strong>ValueError</strong> – If the query vector size does not match the expected
+    collection vector size.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_vector_db.QdrantDBClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_vector_db.</span></span><span class="sig-name descname"><span class="pre">QdrantDBClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'localhost'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6333</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#QdrantDBClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.QdrantDBClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDBClient</span></code></p>
+<p>Implementation of the BaseDBClient for the Qdrant vector database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host</strong> (<em>str</em>) – Host address of the Qdrant server.</p></li>
+<li><p><strong>port</strong> (<em>int</em>) – Port number for the Qdrant server.</p></li>
+<li><p><strong>api_key</strong> (<em>str</em><em>, </em><em>optional</em>) – API key for authentication.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.QdrantDBClient.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#QdrantDBClient.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.QdrantDBClient.connect" title="Link to this definition"></a></dt>
+<dd><p>Establishes a connection to the Qdrant server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.QdrantDBClient.create_collection">
+<span class="sig-name descname"><span class="pre">create_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cosine'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#QdrantDBClient.create_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.QdrantDBClient.create_collection" title="Link to this definition"></a></dt>
+<dd><p>Creates a collection in Qdrant.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.QdrantDBClient.insert_vector">
+<span class="sig-name descname"><span class="pre">insert_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#QdrantDBClient.insert_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.QdrantDBClient.insert_vector" title="Link to this definition"></a></dt>
+<dd><p>Inserts a vector into the Qdrant collection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.QdrantDBClient.search_vectors">
+<span class="sig-name descname"><span class="pre">search_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#QdrantDBClient.search_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.QdrantDBClient.search_vectors" title="Link to this definition"></a></dt>
+<dd><p>Searches for similar vectors within the Qdrant collection.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_vector_db.DBClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_vector_db.</span></span><span class="sig-name descname"><span class="pre">DBClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'qdrant'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#DBClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.DBClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A unified client for interacting with vector databases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>backend</strong> (<em>str</em>) – The backend to use (default: ‘qdrant’).</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Additional parameters for backend initialization.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBClient.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#DBClient.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.DBClient.connect" title="Link to this definition"></a></dt>
+<dd><p>Establishes a connection to the vector database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBClient.create_collection">
+<span class="sig-name descname"><span class="pre">create_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cosine'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#DBClient.create_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.DBClient.create_collection" title="Link to this definition"></a></dt>
+<dd><p>Creates a new collection in the vector database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the collection to create.</p></li>
+<li><p><strong>vector_size</strong> (<em>int</em>) – The size of the vectors to be stored in the collection.</p></li>
+<li><p><strong>distance_metric</strong> (<em>str</em>) – The distance metric to use for vector comparisons
+(default: ‘cosine’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the distance metric is not supported.</p></li>
+<li><p><a class="reference internal" href="#darca_vector_db.CollectionCreationError" title="darca_vector_db.CollectionCreationError"><strong>CollectionCreationError</strong></a> – If the collection creation fails.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBClient.insert_vector">
+<span class="sig-name descname"><span class="pre">insert_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#DBClient.insert_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.DBClient.insert_vector" title="Link to this definition"></a></dt>
+<dd><p>Inserts a vector into the specified collection.
+:param collection_name: The name of the collection to insert the vector into.
+:type collection_name: str
+:param vector_id: The unique ID for the vector.
+:type vector_id: str
+:param vector: The vector data to insert.
+:type vector: list[float]
+:param metadata: Additional metadata to associate with the vector.
+:type metadata: dict, optional
+:param Raises:
+:param VectorInsertionError: If the vector insertion fails.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBClient.search_vectors">
+<span class="sig-name descname"><span class="pre">search_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#DBClient.search_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.DBClient.search_vectors" title="Link to this definition"></a></dt>
+<dd><p>Searches for similar vectors in the specified collection.
+:param collection_name: The name of the collection to search.
+:type collection_name: str
+:param query_vector: The vector to search for.
+:type query_vector: list[float]
+:param top_k: The number of similar vectors to return (default: 10).
+:type top_k: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>Any</em> – The search results.</p></li>
+<li><p><em>Raises</em></p></li>
+<li><p><em>VectorSearchError</em> – If the vector search fails.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_vector_db.DBClientException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_vector_db.</span></span><span class="sig-name descname"><span class="pre">DBClientException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#DBClientException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.DBClientException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DarcaException</span></code></p>
+<p>Base exception class for all errors related to vector database operations.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>message (str): Description of the error.
+error_code (str): A unique code representing the error type.
+metadata (dict): Additional information related to the error.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBClientException.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.DBClientException.add_note" title="Link to this definition"></a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="darca_vector_db.DBClientException.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#darca_vector_db.DBClientException.args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBClientException.log_exception">
+<span class="sig-name descname"><span class="pre">log_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.DBClientException.log_exception" title="Link to this definition"></a></dt>
+<dd><p>Logs the exception details using DarcaLogger.
+Always logs as an error because exceptions indicate failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBClientException.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.DBClientException.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert exception details to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBClientException.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.DBClientException.with_traceback" title="Link to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_vector_db.DBConnectionError">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_vector_db.</span></span><span class="sig-name descname"><span class="pre">DBConnectionError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#DBConnectionError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.DBConnectionError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#darca_vector_db.DBClientException" title="darca_vector_db.db_client.DBClientException"><code class="xref py py-class docutils literal notranslate"><span class="pre">DBClientException</span></code></a></p>
+<p>Raised when a connection attempt to the vector database fails.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBConnectionError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.DBConnectionError.add_note" title="Link to this definition"></a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="darca_vector_db.DBConnectionError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#darca_vector_db.DBConnectionError.args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBConnectionError.log_exception">
+<span class="sig-name descname"><span class="pre">log_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.DBConnectionError.log_exception" title="Link to this definition"></a></dt>
+<dd><p>Logs the exception details using DarcaLogger.
+Always logs as an error because exceptions indicate failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBConnectionError.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.DBConnectionError.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert exception details to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.DBConnectionError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.DBConnectionError.with_traceback" title="Link to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_vector_db.CollectionCreationError">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_vector_db.</span></span><span class="sig-name descname"><span class="pre">CollectionCreationError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#CollectionCreationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.CollectionCreationError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#darca_vector_db.DBClientException" title="darca_vector_db.db_client.DBClientException"><code class="xref py py-class docutils literal notranslate"><span class="pre">DBClientException</span></code></a></p>
+<p>Raised when the creation of a collection in the vector database fails.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.CollectionCreationError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.CollectionCreationError.add_note" title="Link to this definition"></a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="darca_vector_db.CollectionCreationError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#darca_vector_db.CollectionCreationError.args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.CollectionCreationError.log_exception">
+<span class="sig-name descname"><span class="pre">log_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.CollectionCreationError.log_exception" title="Link to this definition"></a></dt>
+<dd><p>Logs the exception details using DarcaLogger.
+Always logs as an error because exceptions indicate failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.CollectionCreationError.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.CollectionCreationError.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert exception details to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.CollectionCreationError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.CollectionCreationError.with_traceback" title="Link to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_vector_db.VectorInsertionError">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_vector_db.</span></span><span class="sig-name descname"><span class="pre">VectorInsertionError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#VectorInsertionError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.VectorInsertionError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#darca_vector_db.DBClientException" title="darca_vector_db.db_client.DBClientException"><code class="xref py py-class docutils literal notranslate"><span class="pre">DBClientException</span></code></a></p>
+<p>Raised when inserting a vector into a collection fails.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.VectorInsertionError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.VectorInsertionError.add_note" title="Link to this definition"></a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="darca_vector_db.VectorInsertionError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#darca_vector_db.VectorInsertionError.args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.VectorInsertionError.log_exception">
+<span class="sig-name descname"><span class="pre">log_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.VectorInsertionError.log_exception" title="Link to this definition"></a></dt>
+<dd><p>Logs the exception details using DarcaLogger.
+Always logs as an error because exceptions indicate failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.VectorInsertionError.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.VectorInsertionError.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert exception details to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.VectorInsertionError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.VectorInsertionError.with_traceback" title="Link to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_vector_db.VectorSearchError">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_vector_db.</span></span><span class="sig-name descname"><span class="pre">VectorSearchError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_vector_db/db_client.html#VectorSearchError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_vector_db.VectorSearchError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#darca_vector_db.DBClientException" title="darca_vector_db.db_client.DBClientException"><code class="xref py py-class docutils literal notranslate"><span class="pre">DBClientException</span></code></a></p>
+<p>Raised when searching for vectors within a collection fails.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.VectorSearchError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.VectorSearchError.add_note" title="Link to this definition"></a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="darca_vector_db.VectorSearchError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#darca_vector_db.VectorSearchError.args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.VectorSearchError.log_exception">
+<span class="sig-name descname"><span class="pre">log_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.VectorSearchError.log_exception" title="Link to this definition"></a></dt>
+<dd><p>Logs the exception details using DarcaLogger.
+Always logs as an error because exceptions indicate failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.VectorSearchError.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.VectorSearchError.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert exception details to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_vector_db.VectorSearchError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_vector_db.VectorSearchError.with_traceback" title="Link to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2025 darca-vectordb-client Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

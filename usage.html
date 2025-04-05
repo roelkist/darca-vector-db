@@ -1,0 +1,227 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage Guide &mdash; DARCA&#39;s Abstraction for vector databases. 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="Welcome to darca-embeddings’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            DARCA's Abstraction for vector databases.
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#importing-the-library">Importing the Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-client">Creating a Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-collection">Creating a Collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inserting-vectors">Inserting Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#searching-for-vectors">Searching for Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DARCA's Abstraction for vector databases.</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage-guide">
+<h1>Usage Guide<a class="headerlink" href="#usage-guide" title="Link to this heading"></a></h1>
+<p>This document explains in detail how to use the <cite>darca-vector-db</cite> library, including setup, configuration, and using the provided API to interact with vector databases.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>The recommended way to install <cite>darca-vector-db</cite> is via <cite>Poetry</cite>.</p>
+<ol class="arabic">
+<li><p>Clone the repository:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>git clone <a class="reference external" href="https://github.com/roelkist/darca-vector-db.git">https://github.com/roelkist/darca-vector-db.git</a>
+cd darca-vector-db</p>
+</div></blockquote>
+</li>
+<li><p>Create a virtual environment and install dependencies:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>make venv
+make poetry
+make install</p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<p>The <cite>darca-vector-db</cite> library provides a simple interface to interact with a vector database. The backend currently supported is <cite>Qdrant</cite>.</p>
+</section>
+<section id="importing-the-library">
+<h2>Importing the Library<a class="headerlink" href="#importing-the-library" title="Link to this heading"></a></h2>
+<p>You can import the necessary components from the package as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">darca_vector_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">DBClient</span><span class="p">,</span> <span class="n">DBClientException</span><span class="p">,</span> <span class="n">QdrantDBClient</span><span class="p">,</span> <span class="n">BaseDBClient</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-a-client">
+<h2>Creating a Client<a class="headerlink" href="#creating-a-client" title="Link to this heading"></a></h2>
+<p>To create a client for interacting with a Qdrant vector database:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">DBClient</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;qdrant&quot;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6333</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <cite>DBClient</cite> class acts as a unified interface for interacting with different vector databases.</p>
+</section>
+<section id="creating-a-collection">
+<h2>Creating a Collection<a class="headerlink" href="#creating-a-collection" title="Link to this heading"></a></h2>
+<p>To create a collection in the Qdrant database, use the <cite>create_collection</cite> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span>
+    <span class="n">vector_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">distance_metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Parameters:
+- <cite>name</cite>: The name of the collection to create.
+- <cite>vector_size</cite>: The size of the vectors to be stored in the collection.
+- <cite>distance_metric</cite>: The distance metric to use for comparisons. Supported values: <cite>cosine</cite>, <cite>euclidean</cite>, <cite>dot</cite>.</p>
+</section>
+<section id="inserting-vectors">
+<h2>Inserting Vectors<a class="headerlink" href="#inserting-vectors" title="Link to this heading"></a></h2>
+<p>To insert a vector into a collection:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">insert_vector</span><span class="p">(</span>
+    <span class="n">collection_name</span><span class="o">=</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span>
+    <span class="n">vector_id</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="n">vector</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>  <span class="c1"># A vector of size 128</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;example&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Parameters:
+- <cite>collection_name</cite>: Name of the collection to insert the vector into.
+- <cite>vector_id</cite>: Unique identifier for the vector.
+- <cite>vector</cite>: The actual vector data (list of floats).
+- <cite>metadata</cite>: Optional dictionary of metadata associated with the vector.</p>
+</section>
+<section id="searching-for-vectors">
+<h2>Searching for Vectors<a class="headerlink" href="#searching-for-vectors" title="Link to this heading"></a></h2>
+<p>To search for similar vectors within a collection:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_vectors</span><span class="p">(</span>
+    <span class="n">collection_name</span><span class="o">=</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span>
+    <span class="n">query_vector</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="mi">5</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Parameters:
+- <cite>collection_name</cite>: Name of the collection to search within.
+- <cite>query_vector</cite>: The vector to search for.
+- <cite>top_k</cite>: The number of most similar vectors to return.</p>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<p>All errors related to vector database operations are raised as subclasses of <cite>DBClientException</cite>.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="k">except</span> <span class="n">DBClientException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An error occurred: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Custom Exceptions Provided:
+- <cite>DBClientException</cite>: Base exception for all vector database errors.
+- <cite>DBConnectionError</cite>: Raised when the connection to the database fails.
+- <cite>CollectionCreationError</cite>: Raised when collection creation fails.
+- <cite>VectorInsertionError</cite>: Raised when vector insertion fails.
+- <cite>VectorSearchError</cite>: Raised when vector searching fails.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to darca-embeddings’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2025 darca-vectordb-client Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

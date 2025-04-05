@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>darca_vector_db.db_client &mdash; DARCA&#39;s Abstraction for vector databases. 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            DARCA's Abstraction for vector databases.
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DARCA's Abstraction for vector databases.</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">darca_vector_db.db_client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for darca_vector_db.db_client</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">db_client.py</span>
+<span class="sd">============</span>
+
+<span class="sd">A pluggable vector database client system with backend support.</span>
+<span class="sd">Currently, the only supported backend is Qdrant.</span>
+
+<span class="sd">Modules:</span>
+<span class="sd">    - BaseDBClient (Abstract Base Class)</span>
+<span class="sd">    - QdrantDBClient (Qdrant implementation of BaseDBClient)</span>
+<span class="sd">    - DBClient (Unified client interface)</span>
+<span class="sd">    - Custom Exceptions</span>
+
+<span class="sd">Author: Your Name</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">darca_exception.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">DarcaException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">darca_log_facility.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">DarcaLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qdrant_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">QdrantClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qdrant_client.http.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnexpectedResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qdrant_client.http.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Distance</span><span class="p">,</span> <span class="n">PointStruct</span><span class="p">,</span> <span class="n">VectorParams</span>
+
+<span class="c1"># === Custom Exceptions ===</span>
+
+
+<div class="viewcode-block" id="DBClientException">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.DBClientException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DBClientException</span><span class="p">(</span><span class="n">DarcaException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base exception class for all errors related to vector database operations.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        message (str): Description of the error.</span>
+<span class="sd">        error_code (str): A unique code representing the error type.</span>
+<span class="sd">        metadata (dict): Additional information related to the error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">error_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_code</span> <span class="o">=</span> <span class="n">error_code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="DBConnectionError">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.DBConnectionError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DBConnectionError</span><span class="p">(</span><span class="n">DBClientException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a connection attempt to the vector database fails.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="CollectionCreationError">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.CollectionCreationError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CollectionCreationError</span><span class="p">(</span><span class="n">DBClientException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when the creation of a collection in the vector database fails.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="VectorInsertionError">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.VectorInsertionError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VectorInsertionError</span><span class="p">(</span><span class="n">DBClientException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when inserting a vector into a collection fails.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="VectorSearchError">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.VectorSearchError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VectorSearchError</span><span class="p">(</span><span class="n">DBClientException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when searching for vectors within a collection fails.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># === Abstract Base Client ===</span>
+
+
+<div class="viewcode-block" id="BaseDBClient">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.BaseDBClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseDBClient</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract base class for vector database clients.</span>
+
+<span class="sd">    This class defines a standardized interface for all vector database</span>
+<span class="sd">    clients. It enforces implementation of essential methods for connecting</span>
+<span class="sd">    to a vector database, creating collections, inserting vectors, and</span>
+<span class="sd">    performing vector searches.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    connect() -&gt; None</span>
+<span class="sd">        Establishes a connection to the vector database.</span>
+<span class="sd">    create_collection</span>
+<span class="sd">        (name: str, vector_size: int, distance_metric: str) -&gt; None</span>
+<span class="sd">        Creates a new collection in the vector database.</span>
+<span class="sd">    insert_vector(collection_name: str, vector_id: str, vector: List[float],</span>
+<span class="sd">        metadata: Optional[Dict[str, Any]]) -&gt; None</span>
+<span class="sd">        Inserts a vector into a specified collection.</span>
+<span class="sd">    search_vectors(collection_name: str, query_vector:</span>
+<span class="sd">        List[float], top_k: int) -&gt; Any</span>
+<span class="sd">        Searches for similar vectors within a collection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseDBClient.connect">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.BaseDBClient.connect">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Establishes a connection to the vector database.</span>
+
+<span class="sd">        This method should be implemented by subclasses to establish a</span>
+<span class="sd">        connection</span>
+<span class="sd">        to the underlying vector database system.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError</span>
+<span class="sd">            If the method is not implemented by the subclass.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclasses must implement this method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseDBClient.create_collection">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.BaseDBClient.create_collection">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_collection</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vector_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">distance_metric</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new collection in the vector database.</span>
+
+<span class="sd">        This method defines the creation of a new collection within the vector</span>
+<span class="sd">        database. A collection is a logical grouping of vectors with a</span>
+<span class="sd">        specified size and distance metric.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the collection to create. Must be unique within the</span>
+<span class="sd">            database.</span>
+<span class="sd">        vector_size : int</span>
+<span class="sd">            The size (dimensionality) of the vectors to be stored in the</span>
+<span class="sd">            collection.</span>
+<span class="sd">        distance_metric : str</span>
+<span class="sd">            The distance metric to use for vector comparisons. Typical</span>
+<span class="sd">            values include:</span>
+
+<span class="sd">                - &#39;cosine&#39;</span>
+<span class="sd">                - &#39;euclidean&#39;</span>
+<span class="sd">                - &#39;dot&#39;</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError</span>
+<span class="sd">            If the method is not implemented by the subclass.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the specified distance metric is not supported by the backend.</span>
+<span class="sd">            Note: Validation for unsupported distance metrics must be</span>
+<span class="sd">            implemented by subclasses.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclasses must implement this method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseDBClient.insert_vector">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.BaseDBClient.insert_vector">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">insert_vector</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">vector_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">vector</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts a vector into a specified collection.</span>
+
+<span class="sd">        This method adds a single vector, identified by a unique ID, to an</span>
+<span class="sd">        existing collection.</span>
+<span class="sd">        Optionally, metadata can be associated with the vector for additional</span>
+<span class="sd">        information.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collection_name : str</span>
+<span class="sd">            The name of the collection where the vector will be stored.</span>
+<span class="sd">        vector_id : str</span>
+<span class="sd">            A unique identifier for the vector. It must be unique within the</span>
+<span class="sd">            collection.</span>
+<span class="sd">        vector : List[float]</span>
+<span class="sd">            The vector data to be inserted. The length of the list should</span>
+<span class="sd">            match the collection&#39;s vector size.</span>
+<span class="sd">        metadata : dict, optional</span>
+<span class="sd">            A dictionary of metadata to associate with the vector. Defaults</span>
+<span class="sd">            to None.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError</span>
+<span class="sd">            If the method is not implemented by the subclass.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the vector size does not match the expected collection</span>
+<span class="sd">            vector size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclasses must implement this method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseDBClient.search_vectors">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.BaseDBClient.search_vectors">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_vectors</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query_vector</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Searches for similar vectors within a collection.</span>
+
+<span class="sd">        This method performs a similarity search against a specified</span>
+<span class="sd">        collection,</span>
+<span class="sd">        returning the most similar vectors to a given query vector.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collection_name : str</span>
+<span class="sd">            The name of the collection to search within.</span>
+<span class="sd">        query_vector : List[float]</span>
+<span class="sd">            The query vector used to perform the search. The length must</span>
+<span class="sd">            match the collection&#39;s vector size.</span>
+<span class="sd">        top_k : int, optional</span>
+<span class="sd">            The number of most similar vectors to return. Defaults to 10.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any</span>
+<span class="sd">            The search results as returned by the underlying vector</span>
+<span class="sd">            database implementation.</span>
+<span class="sd">            The format of the results may vary depending on the backend.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError</span>
+<span class="sd">            If the method is not implemented by the subclass.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the query vector size does not match the expected</span>
+<span class="sd">            collection vector size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclasses must implement this method.&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># === Qdrant Implementation ===</span>
+
+
+<div class="viewcode-block" id="QdrantDBClient">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.QdrantDBClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">QdrantDBClient</span><span class="p">(</span><span class="n">BaseDBClient</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implementation of the BaseDBClient for the Qdrant vector database.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    host : str</span>
+<span class="sd">        Host address of the Qdrant server.</span>
+<span class="sd">    port : int</span>
+<span class="sd">        Port number for the Qdrant server.</span>
+<span class="sd">    api_key : str, optional</span>
+<span class="sd">        API key for authentication.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+        <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6333</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">DarcaLogger</span><span class="p">(</span><span class="s2">&quot;darca-vector-db.qdrant&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DARCA_VECTORDB_HOST&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DARCA_VECTORDB_PORT&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">api_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="QdrantDBClient.connect">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.QdrantDBClient.connect">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Establishes a connection to the Qdrant server.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">QdrantClient</span><span class="p">(</span>
+                <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_key</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Successfully connected to Qdrant at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Connection to Qdrant failed&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">DBConnectionError</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to connect to Qdrant server&quot;</span><span class="p">,</span> <span class="s2">&quot;DB_CONN_ERROR&quot;</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QdrantDBClient.create_collection">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.QdrantDBClient.create_collection">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_collection</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vector_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">distance_metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cosine&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a collection in Qdrant.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Distance</span><span class="p">,</span> <span class="n">distance_metric</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">VectorParams</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">vector_size</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="n">distance</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; created successfully.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported distance metric: </span><span class="si">{</span><span class="n">distance_metric</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">UnexpectedResponse</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to create collection&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CollectionCreationError</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to create collection&quot;</span><span class="p">,</span> <span class="s2">&quot;COLLECTION_CREATION_ERROR&quot;</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QdrantDBClient.insert_vector">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.QdrantDBClient.insert_vector">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">insert_vector</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">vector_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">vector</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inserts a vector into the Qdrant collection.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">PointStruct</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">vector_id</span><span class="p">,</span> <span class="n">vector</span><span class="o">=</span><span class="n">vector</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span><span class="n">collection_name</span><span class="o">=</span><span class="n">collection_name</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">[</span><span class="n">point</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Vector with ID &#39;</span><span class="si">{</span><span class="n">vector_id</span><span class="si">}</span><span class="s2">&#39; inserted successfully &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;into &#39;</span><span class="si">{</span><span class="n">collection_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to insert vector&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">VectorInsertionError</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to insert vector&quot;</span><span class="p">,</span> <span class="s2">&quot;VECTOR_INSERTION_ERROR&quot;</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QdrantDBClient.search_vectors">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.QdrantDBClient.search_vectors">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_vectors</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query_vector</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Searches for similar vectors within the Qdrant collection.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                <span class="n">collection_name</span><span class="p">,</span> <span class="n">query_vector</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">top_k</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Search completed successfully in collection &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">collection_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">results</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to search vectors&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">VectorSearchError</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to search vectors&quot;</span><span class="p">,</span> <span class="s2">&quot;VECTOR_SEARCH_ERROR&quot;</span>
+            <span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># === DBClient Wrapper ===</span>
+
+
+<div class="viewcode-block" id="DBClient">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.DBClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DBClient</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A unified client for interacting with vector databases.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend : str</span>
+<span class="sd">        The backend to use (default: &#39;qdrant&#39;).</span>
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        Additional parameters for backend initialization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;qdrant&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">DarcaLogger</span><span class="p">(</span><span class="s2">&quot;darca-vector-db&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">&quot;qdrant&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">QdrantDBClient</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DBClientException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Backend &#39;</span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2">&#39; is not supported&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;DB_UNSUPPORTED_BACKEND&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="DBClient.connect">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.DBClient.connect">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Establishes a connection to the vector database.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Connected to the vector database.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DBClient.create_collection">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.DBClient.create_collection">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_collection</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vector_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">distance_metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cosine&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new collection in the vector database.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the collection to create.</span>
+<span class="sd">        vector_size : int</span>
+<span class="sd">            The size of the vectors to be stored in the collection.</span>
+<span class="sd">        distance_metric : str</span>
+<span class="sd">            The distance metric to use for vector comparisons</span>
+<span class="sd">            (default: &#39;cosine&#39;).</span>
+<span class="sd">        Raises</span>
+<span class="sd">        -------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the distance metric is not supported.</span>
+<span class="sd">        CollectionCreationError</span>
+<span class="sd">            If the collection creation fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">vector_size</span><span class="p">,</span> <span class="n">distance_metric</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; created.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DBClient.insert_vector">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.DBClient.insert_vector">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">insert_vector</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">vector_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">vector</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts a vector into the specified collection.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collection_name : str</span>
+<span class="sd">            The name of the collection to insert the vector into.</span>
+<span class="sd">        vector_id : str</span>
+<span class="sd">            The unique ID for the vector.</span>
+<span class="sd">        vector : list[float]</span>
+<span class="sd">            The vector data to insert.</span>
+<span class="sd">        metadata : dict, optional</span>
+<span class="sd">            Additional metadata to associate with the vector.</span>
+<span class="sd">        Raises</span>
+<span class="sd">        VectorInsertionError</span>
+<span class="sd">            If the vector insertion fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">insert_vector</span><span class="p">(</span>
+            <span class="n">collection_name</span><span class="p">,</span> <span class="n">vector_id</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">metadata</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Vector &#39;</span><span class="si">{</span><span class="n">vector_id</span><span class="si">}</span><span class="s2">&#39; inserted into collection &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">collection_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DBClient.search_vectors">
+<a class="viewcode-back" href="../../api.html#darca_vector_db.DBClient.search_vectors">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_vectors</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query_vector</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Searches for similar vectors in the specified collection.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collection_name : str</span>
+<span class="sd">            The name of the collection to search.</span>
+<span class="sd">        query_vector : list[float]</span>
+<span class="sd">            The vector to search for.</span>
+<span class="sd">        top_k : int</span>
+<span class="sd">            The number of similar vectors to return (default: 10).</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any</span>
+<span class="sd">            The search results.</span>
+<span class="sd">        Raises</span>
+<span class="sd">        VectorSearchError</span>
+<span class="sd">            If the vector search fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">search_vectors</span><span class="p">(</span>
+            <span class="n">collection_name</span><span class="p">,</span> <span class="n">query_vector</span><span class="p">,</span> <span class="n">top_k</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Search completed in collection &#39;</span><span class="si">{</span><span class="n">collection_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2025 darca-vectordb-client Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
