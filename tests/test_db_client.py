@@ -194,7 +194,7 @@ def test_search_vectors_failure(qdrant_client):
     Test vector search failure handling.
     """
     qdrant_client.logger.error.reset_mock()  # Ensure isolation between tests
-    
+
     qdrant_client.client.search.side_effect = Exception("Search Failed")
 
     with pytest.raises(VectorSearchError):
