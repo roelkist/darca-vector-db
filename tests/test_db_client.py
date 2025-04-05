@@ -140,6 +140,7 @@ def test_create_collection_success(qdrant_client):
     """
     Test successful collection creation.
     """
+    qdrant_client.logger.info.reset_mock()  # Ensure isolation between tests
     qdrant_client.client.create_collection.return_value = None
     qdrant_client.create_collection("test_collection", 128, "cosine")
     qdrant_client.logger.info.assert_called_once_with(
@@ -151,6 +152,7 @@ def test_insert_vector_success(qdrant_client):
     """
     Test successful vector insertion.
     """
+    qdrant_client.logger.info.reset_mock()  # Ensure isolation between tests
     qdrant_client.client.upsert.return_value = None
     qdrant_client.insert_vector("test_collection", "vec1", [0.1, 0.2, 0.3])
     qdrant_client.logger.info.assert_called_once_with(
@@ -162,6 +164,8 @@ def test_insert_vector_failure(qdrant_client):
     """
     Test vector insertion failure handling.
     """
+    qdrant_client.logger.error.reset_mock()  # Ensure isolation between tests
+
     qdrant_client.client.upsert.side_effect = Exception("Insertion Failed")
 
     with pytest.raises(VectorInsertionError):
@@ -189,6 +193,8 @@ def test_search_vectors_failure(qdrant_client):
     """
     Test vector search failure handling.
     """
+    qdrant_client.logger.error.reset_mock()  # Ensure isolation between tests
+    
     qdrant_client.client.search.side_effect = Exception("Search Failed")
 
     with pytest.raises(VectorSearchError):
@@ -267,6 +273,8 @@ def test_dbclient_create_collection(db_client):
     Ensures that the collection creation is made and the logger.info()
     is called.
     """
+    db_client.logger.info.reset_mock()  # Ensure isolation between tests
+
     db_client._client.create_collection = MagicMock()
 
     db_client.create_collection("test_collection", 128, "cosine")
