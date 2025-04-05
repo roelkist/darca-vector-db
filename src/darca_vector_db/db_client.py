@@ -300,7 +300,7 @@ class QdrantDBClient(BaseDBClient):
     def insert_vector(
         self,
         collection_name: str,
-        vector_id: str,
+        vector_id: int,
         vector: List[float],
         metadata: Optional[Dict[str, Any]] = None,
     ) -> None:

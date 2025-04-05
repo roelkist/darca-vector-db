@@ -41,12 +41,24 @@ To set up the project locally, follow these steps:
        git clone https://github.com/roelkist/darca-vector-db.git
        cd darca-vector-db
 
-2. Create a virtual environment and install dependencies:
+2. Install dependencies and set up the environment with a single command:
    .. code-block:: bash
 
-       make venv
-       make poetry
        make install
+
+This command will handle creating the virtual environment, installing Poetry, and installing dependencies.
+
+Make Targets for Faster Iterations
+-----------------------------------
+You can use specific make targets for faster development cycles:
+
+- `make format`  : Formats the codebase using `black` and `isort`.
+- `make test`    : Runs the test suite with coverage reporting.
+- `make docs`    : Builds the documentation using Sphinx.
+- `make check`   : Runs all checks (formatting, testing, docs) before committing.
+
+Always run `make check` before committing changes to ensure consistency and quality.
+
 
 3. Running tests:
    .. code-block:: bash
@@ -82,9 +94,9 @@ To use the client, instantiate it with the desired backend (currently only Qdran
 
     client = DBClient(backend="qdrant", host="localhost", port=6333)
     client.connect()
-    client.create_collection(name="my_vectors", vector_size=128)
-    client.insert_vector("my_vectors", vector_id="1", vector=[0.1, 0.2, 0.3])
-    results = client.search_vectors("my_vectors", query_vector=[0.1, 0.2, 0.3])
+    client.create_collection(name="my_vectors", vector_size=128, distance_metric="cosine")
+    client.insert_vector("my_vectors", vector_id=1, vector=[0.1] * 128, metadata={"label": "example"})
+    results = client.search_vectors("my_vectors", query_vector=[0.1] * 128, top_k=5)
     print(results)
 
 Contributing
@@ -98,3 +110,4 @@ MIT License
 Author
 ------
 Roel Kist
+
