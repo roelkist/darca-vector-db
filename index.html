@@ -98,14 +98,26 @@ This project provides a unified client interface to interact with vector databas
 cd darca-vector-db</p>
 </div></blockquote>
 </li>
-<li><p>Create a virtual environment and install dependencies:
+<li><p>Install dependencies and set up the environment with a single command:
 .. code-block:: bash</p>
 <blockquote>
-<div><p>make venv
-make poetry
-make install</p>
+<div><p>make install</p>
 </div></blockquote>
 </li>
+</ol>
+<p>This command will handle creating the virtual environment, installing Poetry, and installing dependencies.</p>
+</section>
+<section id="make-targets-for-faster-iterations">
+<h2>Make Targets for Faster Iterations<a class="headerlink" href="#make-targets-for-faster-iterations" title="Link to this heading"></a></h2>
+<p>You can use specific make targets for faster development cycles:</p>
+<ul class="simple">
+<li><p><cite>make format</cite>  : Formats the codebase using <cite>black</cite> and <cite>isort</cite>.</p></li>
+<li><p><cite>make test</cite>    : Runs the test suite with coverage reporting.</p></li>
+<li><p><cite>make docs</cite>    : Builds the documentation using Sphinx.</p></li>
+<li><p><cite>make check</cite>   : Runs all checks (formatting, testing, docs) before committing.</p></li>
+</ul>
+<p>Always run <cite>make check</cite> before committing changes to ensure consistency and quality.</p>
+<ol class="arabic" start="3">
 <li><p>Running tests:
 .. code-block:: bash</p>
 <blockquote>
@@ -144,9 +156,9 @@ make install</p>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">DBClient</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;qdrant&quot;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6333</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span> <span class="n">vector_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">insert_vector</span><span class="p">(</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span> <span class="n">vector_id</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">vector</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_vectors</span><span class="p">(</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span> <span class="n">query_vector</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="n">client</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span> <span class="n">vector_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">distance_metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">insert_vector</span><span class="p">(</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span> <span class="n">vector_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">vector</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">128</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;example&quot;</span><span class="p">})</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_vectors</span><span class="p">(</span><span class="s2">&quot;my_vectors&quot;</span><span class="p">,</span> <span class="n">query_vector</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">128</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </pre></div>
 </div>

@@ -30,7 +30,7 @@ You can import the necessary components from the package as follows:
 
 .. code-block:: python
 
-    from darca_vector_db import DBClient, DBClientException, QdrantDBClient, BaseDBClient
+    from darca_vector_db import DBClient, DBClientException
 
 Creating a Client
 -----------------
@@ -68,15 +68,15 @@ To insert a vector into a collection:
 
     client.insert_vector(
         collection_name="my_vectors",
-        vector_id="1",
-        vector=[0.1, 0.2, 0.3, ...],  # A vector of size 128
+        vector_id=1,  # Must be an integer
+        vector=[0.1] * 128,  # A valid vector of size 128
         metadata={"label": "example"}
     )
 
 Parameters:
 - `collection_name`: Name of the collection to insert the vector into.
-- `vector_id`: Unique identifier for the vector.
-- `vector`: The actual vector data (list of floats).
+- `vector_id`: Unique identifier for the vector. Must be an integer.
+- `vector`: The actual vector data (list of floats) of size `vector_size`.
 - `metadata`: Optional dictionary of metadata associated with the vector.
 
 Searching for Vectors
@@ -87,14 +87,14 @@ To search for similar vectors within a collection:
 
     results = client.search_vectors(
         collection_name="my_vectors",
-        query_vector=[0.1, 0.2, 0.3, ...],
+        query_vector=[0.1] * 128,  # A valid query vector of size 128
         top_k=5
     )
     print(results)
 
 Parameters:
 - `collection_name`: Name of the collection to search within.
-- `query_vector`: The vector to search for.
+- `query_vector`: The vector to search for. Must match the collection's `vector_size`.
 - `top_k`: The number of most similar vectors to return.
 
 Error Handling
