@@ -2,8 +2,28 @@ darca-vector-db
 ===============
 
 A pluggable vector database client system with backend support. Currently, the only supported backend is Qdrant.
-
 This project provides a unified client interface to interact with vector databases. It is designed to be easily extensible to support additional backends in the future.
+
+|Build Status| |Deploy Status| |CodeCov| |Formatting| |License| |PyPi Version| |Docs|
+
+.. |Build Status| image:: https://github.com/roelkist/darca-vector-db/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/roelkist/darca-vector-db/actions
+.. |Deploy Status| image:: https://github.com/roelkist/darca-vector-db/actions/workflows/cd.yml/badge.svg
+   :target: https://github.com/roelkist/darca-vector-db/actions
+.. |Codecov| image:: https://codecov.io/gh/roelkist/darca-vector-db/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/roelkist/darca-vector-db
+   :alt: Codecov
+.. |Formatting| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+   :target: https://github.com/psf/black
+   :alt: Black code style
+.. |License| image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+.. |PyPi Version| image:: https://img.shields.io/pypi/v/darca-vector-db
+   :target: https://pypi.org/project/darca-vector-db/
+   :alt: PyPi
+.. |Docs| image:: https://img.shields.io/github/deployments/roelkist/darca-vector-db/github-pages
+   :target: https://roelkist.github.io/darca-vector-db/
+   :alt: GitHub Pages
 
 GitHub Repository:
 ------------------
