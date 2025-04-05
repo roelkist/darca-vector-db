@@ -174,6 +174,8 @@ def test_search_vectors_success(qdrant_client):
     """
     Test successful vector search operation.
     """
+    qdrant_client.logger.info.reset_mock()  # Ensure isolation between tests
+
     qdrant_client.client.search.return_value = ["result1", "result2"]
     results = qdrant_client.search_vectors("test_collection", [0.1, 0.2, 0.3])
 
@@ -223,6 +225,8 @@ def test_create_collection_unexpected_response(qdrant_client):
     This will cover lines 145 and 146 where logger.error is called
     and CollectionCreationError is raised.
     """
+    qdrant_client.logger.error.reset_mock()  # Ensure isolation between tests
+
     # Mock the client to raise an UnexpectedResponse with required arguments
     qdrant_client.client.create_collection.side_effect = UnexpectedResponse(
         reason_phrase="Bad Request",
@@ -281,6 +285,8 @@ def test_dbclient_insert_vector(db_client):
     Ensures that the vector insertion is made and the logger.info()
     is called.
     """
+    db_client.logger.info.reset_mock()  # Ensure isolation between tests
+
     db_client._client.insert_vector = MagicMock()
 
     db_client.insert_vector("test_collection", "vec1", [0.1, 0.2, 0.3])
@@ -298,6 +304,8 @@ def test_dbclient_search_vectors(db_client):
     Test the search_vectors() method of DBClient.
     Ensures that the search operation is made and the logger.info() is called.
     """
+    db_client.logger.info.reset_mock()  # Ensure isolation between tests
+    
     db_client._client.search_vectors = MagicMock(
         return_value=["result1", "result2"]
     )
